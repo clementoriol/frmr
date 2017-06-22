@@ -7,14 +7,8 @@ const publicPath = join(__dirname, "/../public");
 module.exports = opts => {
   return {
     entry: {
-      index: "./src/index",
+      frmr: "./src/index",
       demo: "./src/demo",
-    },
-    output: {
-      path: join(__dirname, "/../dist"),
-      libraryTarget: "umd",
-      library: "Frmr",
-      filename: "[name].js",
     },
     devtool: "source-map",
     module: {

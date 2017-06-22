@@ -5,19 +5,20 @@ const BundleAnalyzerPlugin = require("webpack-bundle-analyzer")
 const LodashModuleReplacementPlugin = require("lodash-webpack-plugin");
 
 const libSrcPath = join(__dirname, "/../src");
-const distPath = join(__dirname, "/../dist");
-const publicPath = join(__dirname, "/../public");
+const distPath = join(__dirname, "/../lib");
 
 module.exports = opts => {
   return {
     entry: {
-      index: "./src/index",
+      frmr: "./src/index",
+      "frmr.min": "./src/index",
     },
     output: {
-      path: join(__dirname, "/../dist"),
+      path: join(__dirname, "/../lib"),
       libraryTarget: "umd",
       library: "Frmr",
       filename: "[name].js",
+      umdNamedDefine: true,
     },
     module: {
       rules: [
@@ -52,6 +53,8 @@ module.exports = opts => {
           debug: false,
         }),
         new webpack.optimize.UglifyJsPlugin({
+          include: /\.min\.js$/,
+          minimize: true,
           beautify: false,
           mangle: {
             screw_ie8: true,

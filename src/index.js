@@ -1,4 +1,4 @@
-import controllers from "./lib/controller_register";
+import controllers from "./lib/controller_registerer";
 
 const Frmr = {
   controllers,

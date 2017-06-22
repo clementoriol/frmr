@@ -31,7 +31,6 @@ Thumbs.db
 
 # Generated files
 build
-dist
 coverage
 
 # Config
