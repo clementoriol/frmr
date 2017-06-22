@@ -1,7 +1,7 @@
 {
   "name": "frmr",
   "version": "1.0.0-beta.1",
-  "main": "src/index.js",
+  "main": "lib/frmr.js",
   "repository": "https://github.com/clementoriol/frmr",
   "author": "Clement Oriol",
   "license": "MIT",
@@ -9,7 +9,9 @@
     "start": "webpack-dev-server --env.type=dev",
     "build": "webpack --env.type=build",
     "build:analyze": "webpack --env.type=build --env.analyze",
-    "test": "jest --watch"
+    "test": "jest --watch",
+    "test:single": "jest",
+    "prepublish": "yarn test:single && yarn build"
   },
   "jest": {
     "moduleFileExtensions": [
