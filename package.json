@@ -1,6 +1,6 @@
 {
   "name": "frmr",
-  "version": "1.0.0-beta.2",
+  "version": "1.0.0-beta.3",
   "main": "lib/frmr.js",
   "repository": "https://github.com/clementoriol/frmr",
   "author": "Clement Oriol",

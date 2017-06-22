@@ -1,11 +1,11 @@
-import Controllers from "lib/controller_registerer";
+import { controllers } from "index";
 import { ControllerError } from "lib/errors";
 import { flatten } from "lodash";
 
 const noOop = () => {};
 
 beforeEach(() => {
-  Controllers.reset();
+  controllers.reset();
 });
 
 test("Controllers can be registered and run", () => {
@@ -19,7 +19,8 @@ test("Controllers can be registered and run", () => {
   const controllerB = () => mockedFn("b");
   const controllerGlobal = () => mockedFn("global");
 
-  Controllers.registerGlobalController(controllerGlobal)
+  controllers
+    .registerGlobalController(controllerGlobal)
     .registerController("a", controllerA)
     .registerController("b", controllerB)
     .run();
@@ -39,7 +40,8 @@ test("Controllers are only run when the correct data-controller attr is found in
   const controllerB = () => mockedFn("b");
   const controllerC = () => mockedFn("c");
 
-  Controllers.registerController("a", controllerA)
+  controllers
+    .registerController("a", controllerA)
     .registerController("b", controllerB)
     .registerController("c", controllerC)
     .run();
@@ -57,7 +59,8 @@ test("Global controller should always be run", () => {
   const controllerA = () => mockedFn("a");
   const controllerGlobal = () => mockedFn("global");
 
-  Controllers.registerGlobalController(controllerGlobal)
+  controllers
+    .registerGlobalController(controllerGlobal)
     .registerController("a", controllerA)
     .run();
 
@@ -82,7 +85,8 @@ test("Controllers can be passed an order describing when to be run", () => {
   const controllerE = () => mockedFn("e");
   const controllerGlobal = () => mockedFn("global");
 
-  Controllers.registerController("a", controllerA, 3)
+  controllers
+    .registerController("a", controllerA, 3)
     .registerController("b", controllerB, 1)
     .registerController("c", controllerC, 7)
     .registerGlobalController(controllerGlobal)
@@ -105,7 +109,7 @@ test("Controllers can be passed an order describing when to be run", () => {
 test("A single controller can be run", () => {
   const mockedFn = jest.fn();
   const controllerA = () => mockedFn("controllerA");
-  Controllers.registerController("a", controllerA).run("a");
+  controllers.registerController("a", controllerA).run("a");
 
   expect(flatten(mockedFn.mock.calls)).toEqual(["controllerA"]);
   expect(mockedFn.mock.calls.length).toBe(1);
@@ -113,12 +117,12 @@ test("A single controller can be run", () => {
 
 /* Testing error handling */
 test("registerController should throw when passing wrong arguments", () => {
-  expect(() => Controllers.registerController(3, noOop)).toThrow();
-  expect(() => Controllers.registerController("test", 3)).toThrow();
-  expect(() => Controllers.registerController("test", noOop)).not.toThrow();
+  expect(() => controllers.registerController(3, noOop)).toThrow();
+  expect(() => controllers.registerController("test", 3)).toThrow();
+  expect(() => controllers.registerController("test", noOop)).not.toThrow();
 });
 
 test("registerGlobalController should throw when passing wrong arguments", () => {
-  expect(() => Controllers.registerGlobalController("test", noOop)).toThrow();
-  expect(() => Controllers.registerGlobalController(noOop)).not.toThrow();
+  expect(() => controllers.registerGlobalController("test", noOop)).toThrow();
+  expect(() => controllers.registerGlobalController(noOop)).not.toThrow();
 });
