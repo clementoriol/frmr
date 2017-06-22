@@ -1,4 +1,4 @@
-import Controllers from "lib/controller_registrer";
+import Controllers from "lib/controller_registerer";
 import { ControllerError } from "lib/errors";
 import { flatten } from "lodash";
 
