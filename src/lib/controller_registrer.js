@@ -4,6 +4,7 @@ import { ControllerError } from "./errors";
 let controllersTable = new Map();
 
 // Constants
+const globalControllerName = "__GLOBAL__";
 const defaultControllerOrder = 9999;
 
 /* Private functions */
@@ -21,14 +22,19 @@ const _addToTable = (controllerName, { order, handler }) => {
       [...controllersTable.entries()].sort(_sortTable)
     );
   }
-  console.log(controllersTable);
 };
 
-const _isCorrectPage = () => true;
+const _isCorrectPage = controllerName => {
+  if (document.querySelector(`[data-controller="${controllerName}"]`)) {
+    return true;
+  }
+};
 
 const _runAll = () => {
   for (let [controllerName, { handler }] of controllersTable) {
-    if (_isCorrectPage(controllerName)) {
+    if (
+      controllerName === globalControllerName || _isCorrectPage(controllerName)
+    ) {
       handler();
     }
   }
@@ -61,7 +67,7 @@ const registerGlobalController = handler => {
     );
   }
 
-  registerController("global", handler, 0);
+  registerController(globalControllerName, handler, 0);
   return publicAPI;
 };
 

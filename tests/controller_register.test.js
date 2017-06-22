@@ -9,6 +9,11 @@ beforeEach(() => {
 });
 
 test("Controllers can be registered and run", () => {
+  document.body.innerHTML = `
+    <div data-controller="a"></div>
+    <div data-controller="b"></div>
+  `;
+
   const mockedFn = jest.fn();
   const controllerA = () => mockedFn("a");
   const controllerB = () => mockedFn("b");
@@ -23,7 +28,52 @@ test("Controllers can be registered and run", () => {
   expect(mockedFn.mock.calls.length).toBe(3);
 });
 
+test("Controllers are only run when the correct data-controller attr is found in DOM", () => {
+  document.body.innerHTML = `
+    <div data-controller="a"></div>
+    <div data-controller="c"></div>
+  `;
+
+  const mockedFn = jest.fn();
+  const controllerA = () => mockedFn("a");
+  const controllerB = () => mockedFn("b");
+  const controllerC = () => mockedFn("c");
+
+  Controllers.registerController("a", controllerA)
+    .registerController("b", controllerB)
+    .registerController("c", controllerC)
+    .run();
+
+  expect(flatten(mockedFn.mock.calls)).toEqual(["a", "c"]);
+  expect(mockedFn.mock.calls.length).toBe(2);
+});
+
+test("Global controller should always be run", () => {
+  document.body.innerHTML = `
+    <div data-controller="a"></div>
+  `;
+
+  const mockedFn = jest.fn();
+  const controllerA = () => mockedFn("a");
+  const controllerGlobal = () => mockedFn("global");
+
+  Controllers.registerGlobalController(controllerGlobal)
+    .registerController("a", controllerA)
+    .run();
+
+  expect(flatten(mockedFn.mock.calls)).toEqual(["global", "a"]);
+  expect(mockedFn.mock.calls.length).toBe(2);
+});
+
 test("Controllers can be passed an order describing when to be run", () => {
+  document.body.innerHTML = `
+    <div data-controller="a"></div>
+    <div data-controller="b"></div>
+    <div data-controller="c"></div>
+    <div data-controller="d"></div>
+    <div data-controller="e"></div>
+  `;
+
   const mockedFn = jest.fn();
   const controllerA = () => mockedFn("a");
   const controllerB = () => mockedFn("b");
